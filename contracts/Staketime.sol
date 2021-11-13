@@ -1,10 +1,11 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
+
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Staketime is Ownable { //is ERC20?
+contract Staketime is Ownable {
     using SafeMath for uint256;
     uint256 public startingpoint;
     uint256 public period;  
@@ -15,7 +16,8 @@ contract Staketime is Ownable { //is ERC20?
     uint256 private _reservetwo; 
     uint256 private _reservethree;
 
-    constructor(uint256 _period, address _staketoken, uint256 resone, uint256 restwo, uint256 resthree) {
+    constructor(
+        uint256 _period, address _staketoken, uint256 resone, uint256 restwo, uint256 resthree) {
         uint256 _payload =  resone.add(restwo).add(resthree);
         if (_payload != 1000 * (10 ** 18)) revert("only 1000xyz");
         startingpoint = block.timestamp;

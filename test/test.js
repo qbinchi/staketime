@@ -8,6 +8,7 @@ describe("Staketime", function () {
   var tokenXYZ, staketime;
   var admin, alice, bob;
   const time_days = 30;
+
   it("Should deploy, mint and send 1000 tokens to admin and 500 each usr", async function () {
     const accounts = await ethers.getSigners();
     admin = accounts[0];
@@ -21,6 +22,7 @@ describe("Staketime", function () {
     expect(await tokenXYZ.transfer(alice.address, ethers.utils.parseEther("100")), true);
     expect(await tokenXYZ.transfer(bob.address, ethers.utils.parseEther("400")), true);
   });
+
   it("Should fail if deployer is not loading contract with 1000xyz tokens", async function () {
     const initialOwnerBalance = await tokenXYZ.balanceOf(admin.address);
     const Staketime = await ethers.getContractFactory("Staketime");
@@ -35,6 +37,7 @@ describe("Staketime", function () {
     ).to.be.revertedWith("only 1000xyz");
     expect(await tokenXYZ.balanceOf(admin.address)).to.equal(initialOwnerBalance);
   });
+
   it("Should load 1000xyz tokens at deploy time and variables are set", async function () {
     const Staketime = await ethers.getContractFactory("Staketime");
     let token_addr = await tokenXYZ.address;
@@ -59,6 +62,7 @@ describe("Staketime", function () {
     let tokenscount_contract = await tokenXYZ.balanceOf(staketime.address);
     expect(await tokenscount_contract.toString()).to.equal(ethers.utils.parseEther("1000").toString());    
   });
+
   it("Deposites should work and withdrawals should fail. More deposits for accounts should add on", async function () {
     // allowance for x tokens from alice for contract
     await tokenXYZ.connect(alice).approve(staketime.address, ethers.utils.parseEther("100")).then((x) => {
@@ -77,6 +81,7 @@ describe("Staketime", function () {
     let tokenscount_contract = await tokenXYZ.balanceOf(staketime.address);
     expect(await tokenscount_contract.toString()).to.equal(ethers.utils.parseEther("1500").toString());    
   });
+
   it("Should revert deplosites and withdrawals in this period. should fail", async function () {
     await ethers.provider.send("evm_increaseTime", [secs_in_day * time_days])
     await expect(staketime.connect(alice).deposit(ethers.utils.parseEther("100"))).to.be.revertedWith("");
@@ -84,6 +89,7 @@ describe("Staketime", function () {
     await expect(staketime.connect(bob).deposit(ethers.utils.parseEther("100"))).to.be.revertedWith("");
     await expect(staketime.connect(bob).withdrawal()).to.be.revertedWith("");
   });
+
   it("Alice should withdraw her stake + reward", async function () {
     await ethers.provider.send("evm_increaseTime", [secs_in_day * time_days]) 
     await staketime.connect(alice).withdrawal().then((x) => {
@@ -91,11 +97,13 @@ describe("Staketime", function () {
     });
     expect(await tokenXYZ.balanceOf(alice.address).toString(), ethers.utils.parseEther("140").toString());    
   });
+
   it("Deposit and withdrawal for alice and bob deposit should fail", async function () {
     await expect(staketime.connect(alice).deposit(ethers.utils.parseEther("100"))).to.be.revertedWith("");
     await expect(staketime.connect(alice).withdrawal()).to.be.revertedWith("");
     await expect(staketime.connect(bob).deposit(ethers.utils.parseEther("100"))).to.be.revertedWith("");
   });
+
   it("Bob should withdraw her stake + reward", async function () {
     await ethers.provider.send("evm_increaseTime", [secs_in_day * time_days])
     await staketime.connect(bob).withdrawal().then((x) => {
@@ -103,12 +111,14 @@ describe("Staketime", function () {
     });
     expect(await tokenXYZ.balanceOf(bob.address).toString(), ethers.utils.parseEther("860").toString());
   });
+
   it("Deposit and withdrawal for alice and bob should fail", async function () {
     await expect(staketime.connect(alice).deposit(ethers.utils.parseEther("100"))).to.be.revertedWith("");
     await expect(staketime.connect(alice).withdrawal()).to.be.revertedWith("");
     await expect(staketime.connect(bob).deposit(ethers.utils.parseEther("100"))).to.be.revertedWith("");
     await expect(staketime.connect(bob).withdrawal()).to.be.revertedWith("");
   });
+
   it("Closing admin", async function () {
     const initialOwnerBalance = await tokenXYZ.balanceOf(admin.address);
     const initialContractsBalance = await tokenXYZ.balanceOf(staketime.address);
