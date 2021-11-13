@@ -1,25 +1,19 @@
-# Basic Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
-
-IMMPORTANT 
-run nvm use if you have nvm or just use node v12.0.0
-
-forking mainnet with use of alchemy node
-
-npx hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/qByJTvAG1DaU-2BSAEku8juLSgyQuLOM
 
 
-TRAC eth token address - 0xaA7a9CA87d3694B5755f213B5D04094b8d0F0A6F
+/**STEPS**/ 
+- Run <nvm use> if you have nvm or just use node v12.0.0
+- Install dependencies <npm install>
+- Compile Staketime.sol and Token.sol <npx hardhat compile>
+- Run test from /test/test.js <npx hardhat test>
+- In main repository create .env file 
+- Fill .env with appropriate data for your setup and for rinkeby:
+NODEENDPOINT=<node_provider>
+PRIVADMINKEY=<privkey>
+TOKENADDR=<erc20_token_addr>
+- Uncomment 22 line in /hardhat.config.js
+- Run deployment <npx hardhat run scripts/deploy.js --network rinkeby>
+***
+- You can also run in separate terminal <npx hardhat node>
+- Run token deployment <npx hardhat run scripts/deploytoken.js --network localhost>
+- Copy token address from terminal output and paste it to .env in TOKENADDR:
+- Run staking contract deployment <npx hardhat run scripts/deploy.js --network localhost>
