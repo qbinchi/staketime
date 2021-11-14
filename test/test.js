@@ -1,7 +1,7 @@
 //const { BigNumber } = require("@ethersproject/bignumber");
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const { getContractAddress } = require('@ethersproject/address')
+const { getContractAddress } = require('@ethersproject/address');
 const secs_in_day = 60*60*24;
 
 describe("Staketime", function () {
@@ -9,7 +9,7 @@ describe("Staketime", function () {
   var admin, alice, bob;
   const time_days = 30;
 
-  it("Should deploy, mint and send 1000 tokens to admin and 500 each usr", async function () {
+  it("Should deploy, mint and send 10000 tokens to admin, 100 for alice and 400 for bob", async function () {
     const accounts = await ethers.getSigners();
     admin = accounts[0];
     alice = accounts[1];
